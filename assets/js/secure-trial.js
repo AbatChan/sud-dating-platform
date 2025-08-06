@@ -386,9 +386,51 @@
         },
         
         getStripeErrorMessage: function(stripeError) {
+            // Log for debugging
+            console.log('Stripe error details:', {
+                code: stripeError.code,
+                decline_code: stripeError.decline_code,
+                message: stripeError.message,
+                type: stripeError.type
+            });
+            
+            // Map of decline codes to user-friendly messages (prioritize these)
+            const declineCodeMap = {
+                'insufficient_funds': 'Your card doesn\'t have enough funds. Try a different card or contact your bank.',
+                'lost_card': 'This card has been reported lost. Use a different one.',
+                'stolen_card': 'This card has been reported stolen. Use a different one.',
+                'do_not_honor': 'Your bank didn\'t approve the charge. Call them or try another card.',
+                'pickup_card': 'This card cannot be used. Please contact your bank.',
+                'transaction_not_allowed': 'This transaction type isn\'t allowed on your card.',
+                'currency_not_supported': 'This card doesn\'t support the transaction currency.',
+                'duplicate_transaction': 'This appears to be a duplicate transaction. Please wait before trying again.',
+                'fraudulent': 'This transaction was flagged as potentially fraudulent. Contact your bank.',
+                'generic_decline': 'Your card was declined. Please try another card or contact your bank.',
+                'issuer_not_available': 'Your bank is currently unavailable. Please try again later.',
+                'merchant_blacklist': 'This card cannot be used for this transaction.',
+                'new_account_information_available': 'Your card information may have changed. Please try again.',
+                'no_action_taken': 'The bank declined the transaction without explanation. Try another card.',
+                'not_permitted': 'This payment is not permitted on your card.',
+                'offline_pin_required': 'This card requires PIN verification which isn\'t supported online.',
+                'online_or_offline_pin_required': 'This card requires PIN verification which isn\'t supported online.',
+                'pin_try_exceeded': 'Too many incorrect PIN attempts. Contact your bank.',
+                'restricted_card': 'This card has spending restrictions. Contact your bank.',
+                'security_violation': 'Security violation detected. Contact your bank.',
+                'service_not_allowed': 'This service is not allowed on your card.',
+                'stop_payment_order': 'A stop payment order has been placed on this card.',
+                'testmode_decline': 'This is a test transaction decline.',
+                'withdrawal_count_limit_exceeded': 'You\'ve exceeded your card\'s transaction limit.',
+            };
+            
+            // First, check for specific decline code (more precise than error code)
+            if (stripeError.decline_code && declineCodeMap[stripeError.decline_code]) {
+                return declineCodeMap[stripeError.decline_code];
+            }
+            
+            // Fall back to generic error code mapping
             switch (stripeError.code) {
                 case 'card_declined':
-                    return 'Your card was declined. Please try a different payment method.';
+                    return 'Your bank declined this card. Please try another card.';
                     
                 case 'expired_card':
                     return 'Your card has expired. Please use a different card.';
@@ -413,9 +455,12 @@
                 case 'rate_limit':
                     return 'Too many requests. Please wait a moment and try again.';
                     
+                case 'postal_code_invalid':
+                    return 'The ZIP/Postal code didn\'t match your card. Fix it and try again.';
+                    
                 default:
-                    // Generic friendly message for unknown errors
-                    return 'There was an issue with your payment information. Please check your details and try again.';
+                    // If all else fails, show the original Stripe message with context
+                    return stripeError.message || 'There was an issue with your payment information. Please check your details and try again.';
             }
         }
     };

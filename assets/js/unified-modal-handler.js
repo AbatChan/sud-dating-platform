@@ -372,10 +372,12 @@
             } catch (error) {
                 console.error('Payment processing error:', error);
                 
+                const friendlyMessage = this.getStripeErrorMessage(error);
+                
                 if (typeof SUD !== 'undefined' && SUD.showToast) {
-                    SUD.showToast('error', 'Payment Failed', error.message || 'Please try again');
+                    SUD.showToast('error', 'Payment Failed', friendlyMessage);
                 } else {
-                    alert('Payment Failed: ' + (error.message || 'Please try again'));
+                    alert('Payment Failed: ' + friendlyMessage);
                 }
                 
                 submitButton.disabled = false;
@@ -569,6 +571,72 @@
             // Reset current config
             this.currentPaymentType = null;
             this.currentConfig = null;
+        },
+        
+        // Map Stripe errors to user-friendly messages (same as other payment files)
+        getStripeErrorMessage: function(stripeError) {
+            // Log for debugging
+            console.log('Unified Modal Stripe error details:', {
+                code: stripeError.code,
+                decline_code: stripeError.decline_code,
+                message: stripeError.message,
+                type: stripeError.type
+            });
+            
+            // Map of decline codes to user-friendly messages (prioritize these)
+            const declineCodeMap = {
+                'insufficient_funds': 'Your card doesn\'t have enough funds. Try a different card or contact your bank.',
+                'lost_card': 'This card has been reported lost. Use a different one.',
+                'stolen_card': 'This card has been reported stolen. Use a different one.',
+                'do_not_honor': 'Your bank didn\'t approve the charge. Call them or try another card.',
+                'pickup_card': 'This card cannot be used. Please contact your bank.',
+                'transaction_not_allowed': 'This transaction type isn\'t allowed on your card.',
+                'currency_not_supported': 'This card doesn\'t support the transaction currency.',
+                'duplicate_transaction': 'This appears to be a duplicate transaction. Please wait before trying again.',
+                'fraudulent': 'This transaction was flagged as potentially fraudulent. Contact your bank.',
+                'generic_decline': 'Your card was declined. Please try another card or contact your bank.',
+                'issuer_not_available': 'Your bank is currently unavailable. Please try again later.',
+                'restricted_card': 'This card has spending restrictions. Contact your bank.',
+                'testmode_decline': 'This is a test transaction decline.',
+            };
+            
+            // First, check for specific decline code (more precise than error code)
+            if (stripeError.decline_code && declineCodeMap[stripeError.decline_code]) {
+                return declineCodeMap[stripeError.decline_code];
+            }
+            
+            // Fall back to generic error code mapping
+            switch (stripeError.code) {
+                case 'card_declined':
+                    return 'Your bank declined this card. Please try another card.';
+                    
+                case 'expired_card':
+                    return 'Your card has expired. Please use a different card.';
+                    
+                case 'incorrect_cvc':
+                    return 'Your card\'s security code (CVC) is incorrect.';
+                    
+                case 'processing_error':
+                    return 'We encountered an error processing your card. Please try again.';
+                    
+                case 'incorrect_number':
+                    return 'Your card number is incorrect. Please check and try again.';
+                    
+                case 'incomplete_number':
+                case 'incomplete_cvc':
+                case 'incomplete_expiry':
+                    return 'Please complete all card details and try again.';
+                    
+                case 'authentication_required':
+                    return 'Additional authentication is required. Please follow the prompts from your bank.';
+                    
+                case 'postal_code_invalid':
+                    return 'The ZIP/Postal code didn\'t match your card. Fix it and try again.';
+                    
+                default:
+                    // If all else fails, show the original Stripe message with context
+                    return stripeError.message || 'There was an issue with your payment information. Please check your details and try again.';
+            }
         }
     };
     
