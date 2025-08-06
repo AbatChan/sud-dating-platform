@@ -394,52 +394,80 @@
                 type: stripeError.type
             });
             
-            // Map of decline codes to user-friendly messages (prioritize these)
-            const declineCodeMap = {
-                'insufficient_funds': 'Your card doesn\'t have enough funds. Try a different card or contact your bank.',
-                'lost_card': 'This card has been reported lost. Use a different one.',
-                'stolen_card': 'This card has been reported stolen. Use a different one.',
-                'do_not_honor': 'Your bank didn\'t approve the charge. Call them or try another card.',
-                'pickup_card': 'This card cannot be used. Please contact your bank.',
-                'transaction_not_allowed': 'This transaction type isn\'t allowed on your card.',
-                'currency_not_supported': 'This card doesn\'t support the transaction currency.',
-                'duplicate_transaction': 'This appears to be a duplicate transaction. Please wait before trying again.',
-                'fraudulent': 'This transaction was flagged as potentially fraudulent. Contact your bank.',
-                'generic_decline': 'Your card was declined. Please try another card or contact your bank.',
-                'issuer_not_available': 'Your bank is currently unavailable. Please try again later.',
-                'merchant_blacklist': 'This card cannot be used for this transaction.',
-                'new_account_information_available': 'Your card information may have changed. Please try again.',
-                'no_action_taken': 'The bank declined the transaction without explanation. Try another card.',
-                'not_permitted': 'This payment is not permitted on your card.',
-                'offline_pin_required': 'This card requires PIN verification which isn\'t supported online.',
-                'online_or_offline_pin_required': 'This card requires PIN verification which isn\'t supported online.',
-                'pin_try_exceeded': 'Too many incorrect PIN attempts. Contact your bank.',
-                'restricted_card': 'This card has spending restrictions. Contact your bank.',
-                'security_violation': 'Security violation detected. Contact your bank.',
-                'service_not_allowed': 'This service is not allowed on your card.',
-                'stop_payment_order': 'A stop payment order has been placed on this card.',
-                'testmode_decline': 'This is a test transaction decline.',
-                'withdrawal_count_limit_exceeded': 'You\'ve exceeded your card\'s transaction limit.',
-            };
+            // Get the most specific decline code available
+            const declineCode = stripeError.decline_code || stripeError.code;
             
-            // First, check for specific decline code (more precise than error code)
-            if (stripeError.decline_code && declineCodeMap[stripeError.decline_code]) {
-                return declineCodeMap[stripeError.decline_code];
+            // Trial-specific error messages that explain the $5 verification charge
+            if (declineCode === 'insufficient_funds') {
+                return 'To verify your card for this free trial, we place a temporary $5 hold (refunded immediately). Your card doesn\'t have enough funds for this verification. Please add funds or try a different card.';
             }
             
-            // Fall back to generic error code mapping
+            if (declineCode === 'do_not_honor') {
+                return 'Your bank declined the $5 verification charge needed to start your free trial. Please contact your bank or try another card. The $5 is refunded immediately after verification.';
+            }
+            
+            if (declineCode === 'lost_card') {
+                return 'This card has been reported lost and cannot be used for the $5 trial verification. Please try a different card.';
+            }
+            
+            if (declineCode === 'stolen_card') {
+                return 'This card has been reported stolen and cannot be used for the $5 trial verification. Please try a different card.';
+            }
+            
+            if (declineCode === 'pickup_card') {
+                return 'This card cannot be used for the $5 trial verification. Please contact your bank or try a different card.';
+            }
+            
+            if (declineCode === 'restricted_card') {
+                return 'This card has spending restrictions that prevent the $5 trial verification. Please contact your bank or try a different card.';
+            }
+            
+            if (declineCode === 'fraudulent') {
+                return 'The $5 trial verification was flagged for security. Please contact your bank or try a different card.';
+            }
+            
+            if (declineCode === 'transaction_not_allowed') {
+                return 'This card doesn\'t allow the $5 verification charge needed for the free trial. Please try a different card.';
+            }
+            
+            if (declineCode === 'generic_decline') {
+                return 'Your bank declined the $5 trial verification. Please contact your bank or try another card. The $5 is refunded immediately after verification.';
+            }
+            
+            // Map of other decline codes with trial-aware messages
+            const trialSpecificMap = {
+                'currency_not_supported': 'This card doesn\'t support USD transactions for the $5 trial verification. Please try a different card.',
+                'duplicate_transaction': 'This verification appears to be a duplicate. Please wait a moment before trying again.',
+                'issuer_not_available': 'Your bank is currently unavailable for the $5 trial verification. Please try again later.',
+                'merchant_blacklist': 'This card cannot be used for our trial verification. Please try a different card.',
+                'new_account_information_available': 'Your card information may have changed. Please try again with updated details.',
+                'no_action_taken': 'The bank declined the $5 verification without explanation. Try another card.',
+                'not_permitted': 'This payment is not permitted on your card for the trial verification.',
+                'security_violation': 'Security violation detected during verification. Please contact your bank.',
+                'service_not_allowed': 'This service is not allowed on your card for the trial verification.',
+                'stop_payment_order': 'A stop payment order prevents this card from being used for verification.',
+                'testmode_decline': 'This is a test transaction decline.',
+                'withdrawal_count_limit_exceeded': 'You\'ve exceeded your card\'s transaction limit for the verification.',
+            };
+            
+            // Check for other specific decline codes
+            if (trialSpecificMap[declineCode]) {
+                return trialSpecificMap[declineCode];
+            }
+            
+            // Fall back to generic error code mapping with trial context
             switch (stripeError.code) {
                 case 'card_declined':
-                    return 'Your bank declined this card. Please try another card.';
+                    return 'Your card was declined for the $5 trial verification. Please try another card. The $5 is refunded immediately after verification.';
                     
                 case 'expired_card':
-                    return 'Your card has expired. Please use a different card.';
+                    return 'Your card has expired and cannot be used for the trial verification. Please use a different card.';
                     
                 case 'incorrect_cvc':
-                    return 'Your card\'s security code (CVC) is incorrect.';
+                    return 'Your card\'s security code (CVC) is incorrect. Please check and try again.';
                     
                 case 'processing_error':
-                    return 'We encountered an error processing your card. Please try again.';
+                    return 'We encountered an error processing the $5 trial verification. Please try again.';
                     
                 case 'incorrect_number':
                     return 'Your card number is incorrect. Please check and try again.';
@@ -450,17 +478,17 @@
                     return 'Please complete all card details and try again.';
                     
                 case 'authentication_required':
-                    return 'Additional authentication is required. Please follow the prompts from your bank.';
+                    return 'Additional authentication is required for the $5 trial verification. Please follow the prompts from your bank.';
                     
                 case 'rate_limit':
-                    return 'Too many requests. Please wait a moment and try again.';
+                    return 'Too many verification attempts. Please wait a moment and try again.';
                     
                 case 'postal_code_invalid':
-                    return 'The ZIP/Postal code didn\'t match your card. Fix it and try again.';
+                    return 'The ZIP/Postal code didn\'t match your card. Please correct it and try again.';
                     
                 default:
-                    // If all else fails, show the original Stripe message with context
-                    return stripeError.message || 'There was an issue with your payment information. Please check your details and try again.';
+                    // If all else fails, show trial-aware message
+                    return 'We couldn\'t verify your card for the free trial. Please check your card details and try again. (We place a temporary $5 hold that\'s refunded immediately)';
             }
         }
     };
