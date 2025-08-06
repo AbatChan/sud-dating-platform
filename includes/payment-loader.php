@@ -30,8 +30,24 @@ function sud_load_payment_scripts($page_type = 'one-time') {
     echo '    stripe_key: "' . esc_js($stripe_key) . '",' . "\n";
     echo '    paypal_client_id: "' . esc_js($paypal_client_id) . '"' . "\n";
     echo '};' . "\n";
+    
+    // Set debug mode based on environment
+    echo 'window.SUD_DEBUG = (window.location.hostname === "localhost" || window.location.hostname.includes("staging") || window.location.hostname.includes("dev"));' . "\n";
+    
+    // Immediate console suppression for Stripe errors (must run before Stripe SDK loads)
+    echo 'if (!window.SUD_DEBUG) {' . "\n";
+    echo '    const origError = console.error;' . "\n";
+    echo '    console.error = function(...args) {' . "\n";
+    echo '        const msg = args.join(" ");' . "\n";
+    echo '        if (msg.includes("api.stripe.com") && (msg.includes("402") || msg.includes("Payment Required"))) return;' . "\n";
+    echo '        origError.apply(this, args);' . "\n";
+    echo '    };' . "\n";
+    echo '}' . "\n";
+    
     echo '</script>' . "\n";
 
+    // Load stripe error utilities first (dependency for other payment scripts)
+    echo '<script src="' . SUD_JS_URL . '/stripe-error-utils.js" defer></script>' . "\n";
     echo '<script src="' . SUD_JS_URL . '/unified-payment.js" defer></script>' . "\n";
 }
 

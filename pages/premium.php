@@ -681,7 +681,23 @@ $page_title = "Premium Membership - " . SUD_SITE_NAME;
         });
     </script>
     
+    <!-- Console suppression for Stripe errors (must run before Stripe SDK) -->
+    <script>
+    // Set debug mode based on environment
+    window.SUD_DEBUG = (window.location.hostname === 'localhost' || window.location.hostname.includes('staging') || window.location.hostname.includes('dev'));
+    
+    if (!window.SUD_DEBUG) {
+        const origError = console.error;
+        console.error = function(...args) {
+            const msg = args.join(' ');
+            if (msg.includes('api.stripe.com') && (msg.includes('402') || msg.includes('Payment Required'))) return;
+            origError.apply(this, args);
+        };
+    }
+    </script>
+    
     <!-- Secure Trial Payment System -->
+    <script src="<?php echo SUD_JS_URL; ?>/stripe-error-utils.js?v=<?php echo time(); ?>"></script>
     <script src="<?php echo SUD_JS_URL; ?>/secure-trial.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>
