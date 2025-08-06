@@ -250,19 +250,36 @@ function sud_get_user_friendly_stripe_error($e) {
     $error_code = null;
     $error_message = $e->getMessage();
     
-    // Extract Stripe error code
+    // Extract Stripe error code with enhanced debugging
     if ($e instanceof \Stripe\Exception\CardException) {
         $error_code = $e->getStripeCode();
+        $decline_code = $e->getDeclineCode();
+        
+        // Log detailed error for debugging
+        error_log("SUD Stripe CardException - Code: " . ($error_code ?: 'none') . ", Decline: " . ($decline_code ?: 'none') . ", Message: " . $error_message);
+        
+        // Use decline code if available (more specific than error code)
+        if ($decline_code && isset($error_map[$decline_code])) {
+            return $error_map[$decline_code];
+        }
     } elseif ($e instanceof \Stripe\Exception\InvalidRequestException) {
         $error_code = $e->getStripeCode();
+        error_log("SUD Stripe InvalidRequestException - Code: " . ($error_code ?: 'none') . ", Message: " . $error_message);
     } elseif ($e instanceof \Stripe\Exception\AuthenticationException) {
+        error_log("SUD Stripe AuthenticationException: " . $error_message);
         return 'Payment system authentication issue. Please contact support.';
     } elseif ($e instanceof \Stripe\Exception\ApiConnectionException) {
+        error_log("SUD Stripe ApiConnectionException: " . $error_message);
         return 'Unable to connect to payment processor. Please check your internet connection and try again.';
     } elseif ($e instanceof \Stripe\Exception\ApiErrorException) {
         $error_code = $e->getStripeCode();
+        error_log("SUD Stripe ApiErrorException - Code: " . ($error_code ?: 'none') . ", Message: " . $error_message);
     } elseif ($e instanceof \Stripe\Exception\RateLimitException) {
+        error_log("SUD Stripe RateLimitException: " . $error_message);
         return $error_map['rate_limit'];
+    } else {
+        // Log unknown exception types
+        error_log("SUD Stripe Unknown Exception Type: " . get_class($e) . " - Message: " . $error_message);
     }
     
     // Check for specific error codes in the message if no Stripe code
@@ -283,13 +300,35 @@ function sud_get_user_friendly_stripe_error($e) {
     // Special handling for common phrases in error messages
     $error_lower = strtolower($error_message);
     
-    if (strpos($error_lower, 'insufficient') !== false || strpos($error_lower, 'funds') !== false) {
+    // Enhanced pattern matching for better error detection
+    if (strpos($error_lower, 'insufficient') !== false || 
+        strpos($error_lower, 'not enough funds') !== false ||
+        strpos($error_lower, 'balance') !== false ||
+        strpos($error_lower, 'funds') !== false) {
+        
+        error_log("SUD Stripe: Matched insufficient funds pattern in: " . $error_message);
         return $error_map['insufficient_funds'];
-    } elseif (strpos($error_lower, 'declined') !== false || strpos($error_lower, 'decline') !== false) {
+        
+    } elseif (strpos($error_lower, 'declined') !== false || 
+              strpos($error_lower, 'decline') !== false ||
+              strpos($error_lower, 'do not honor') !== false) {
+        
+        error_log("SUD Stripe: Matched card declined pattern in: " . $error_message);
         return $error_map['card_declined'];
-    } elseif (strpos($error_lower, 'expired') !== false) {
+        
+    } elseif (strpos($error_lower, 'expired') !== false || 
+              strpos($error_lower, 'expir') !== false) {
+        
+        error_log("SUD Stripe: Matched expired card pattern in: " . $error_message);
         return $error_map['expired_card'];
-    } elseif (strpos($error_lower, 'cvc') !== false || strpos($error_lower, 'security code') !== false || strpos($error_lower, 'incorrect') !== false) {
+        
+    } elseif (strpos($error_lower, 'cvc') !== false || 
+              strpos($error_lower, 'security code') !== false || 
+              strpos($error_lower, 'incorrect') !== false ||
+              strpos($error_lower, 'cvv') !== false ||
+              strpos($error_lower, 'csv') !== false) {
+        
+        error_log("SUD Stripe: Matched CVC error pattern in: " . $error_message);
         return $error_map['incorrect_cvc'];
     } elseif (strpos($error_lower, 'postal') !== false || strpos($error_lower, 'zip') !== false) {
         return $error_map['postal_code_invalid'];
@@ -299,9 +338,10 @@ function sud_get_user_friendly_stripe_error($e) {
         return $error_map['rate_limit'];
     }
     
-    // Log for debugging
-    error_log("SUD Error Mapping Debug - Original: " . $error_message . " | Code: " . ($error_code ?? 'none') . " | Class: " . get_class($e));
+    // Log for debugging - this indicates we couldn't match any pattern
+    error_log("SUD Stripe Error Mapping FAILED - Original: " . $error_message . " | Code: " . ($error_code ?? 'none') . " | Class: " . get_class($e));
+    error_log("SUD Stripe Error Details: " . print_r($e, true));
     
-    // Final fallback
-    return $error_map['unknown_error'];
+    // Final fallback with more specific message
+    return 'Payment failed: ' . $error_message . '. Please try another card or contact your bank.';
 }

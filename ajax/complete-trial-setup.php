@@ -222,10 +222,20 @@ try {
     delete_user_meta($user_id, 'trial_completion_status');
     
     error_log('Trial Completion Error: ' . $e->getMessage());
+    
+    // Use comprehensive error mapping for better user experience
+    $user_friendly_message = 'Failed to activate trial. Please contact support.';
+    
+    // Check if this is a Stripe error that we can make user-friendly
+    if (function_exists('sud_get_user_friendly_stripe_error') && 
+        ($e instanceof \Stripe\Exception\StripeException)) {
+        $user_friendly_message = sud_get_user_friendly_stripe_error($e);
+    }
+    
     http_response_code(500);
     echo json_encode([
         'success' => false, 
-        'message' => 'Failed to activate trial. Please contact support.'
+        'message' => $user_friendly_message
     ]);
 }
 ?>

@@ -224,10 +224,20 @@ try {
     
 } catch (Exception $e) {
     error_log('Trial Setup Error: ' . $e->getMessage() . ' in file: ' . $e->getFile() . ' line: ' . $e->getLine());
+    
+    // Use comprehensive error mapping for better user experience
+    $user_friendly_message = 'Payment verification setup failed. Please try again.';
+    
+    // Check if this is a Stripe error that we can make user-friendly
+    if (function_exists('sud_get_user_friendly_stripe_error') && 
+        ($e instanceof \Stripe\Exception\StripeException)) {
+        $user_friendly_message = sud_get_user_friendly_stripe_error($e);
+    }
+    
     http_response_code(500);
     echo json_encode([
         'success' => false, 
-        'message' => 'Payment verification setup failed: ' . $e->getMessage()
+        'message' => $user_friendly_message
     ]);
 }
 ?>
