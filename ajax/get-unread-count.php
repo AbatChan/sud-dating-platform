@@ -1,12 +1,9 @@
 <?php
-require_once(dirname(__FILE__, 2) . '/includes/config.php');
-require_once(dirname(__FILE__, 2) . '/includes/ajax-security.php');
-
-header('Content-Type: application/json');
+require_once(dirname(__FILE__, 2) . '/includes/ajax-bootstrap.php');
 
 try {
-    // Use centralized security verification for GET requests
-    $moderator_id = sud_verify_ajax([
+    // Use centralized bootstrap for consistent setup
+    $moderator_id = sud_ajax_bootstrap([
         'methods' => ['GET'],
         'require_auth' => true,
         'require_nonce' => false,
@@ -32,7 +29,8 @@ try {
     
     $unread_count = (int)$unread_count;
     
-    wp_send_json_success([
+    // Use standardized success response
+    sud_ajax_success([
         'unread_count' => $unread_count
     ]);
     

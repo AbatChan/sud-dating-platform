@@ -1,23 +1,22 @@
 <?php
 
-require_once(dirname(__FILE__, 2) . '/includes/config.php');
-require_once(dirname(__FILE__, 2) . '/includes/ajax-security.php');
+require_once(dirname(__FILE__, 2) . '/includes/ajax-bootstrap.php');
 require_once(dirname(__FILE__, 2) . '/includes/messaging-functions.php');
 require_once(dirname(__FILE__, 2) . '/includes/user-functions.php');
 
-header('Content-Type: application/json');
-
 try {
-    // Use centralized security verification
-    $current_user_id = sud_verify_ajax([
+    // Use centralized bootstrap for consistent setup
+    $current_user_id = sud_ajax_bootstrap([
         'methods' => ['POST'],
         'require_auth' => true,
         'require_nonce' => true,
         'nonce_action' => 'sud_ajax_action',
         'rate_limit' => ['requests' => 10, 'window' => 60, 'action' => 'block_user']
     ]);
-    $user_to_modify_id = SUD_AJAX_Security::validate_user_id($_POST['user_id'] ?? 0, false);
-    $action = isset($_POST['action']) ? sanitize_key($_POST['action']) : 'block';
+    
+    // Use centralized input validation
+    $user_to_modify_id = sud_validate_input($_POST['user_id'] ?? 0, 'user_id');
+    $action = sud_validate_input($_POST['action'] ?? 'block', 'text');
 
     if ($user_to_modify_id == $current_user_id) {
         throw new Exception('You cannot block/unblock yourself');
@@ -38,7 +37,8 @@ try {
             toggle_user_favorite($user_to_modify_id, false);
         }
 
-        wp_send_json_success([
+        // Use standardized success response
+        sud_ajax_success([
             'message' => $should_block ? 'User blocked successfully.' : 'User unblocked successfully.'
         ]);
 
@@ -50,5 +50,3 @@ try {
 } catch (Exception $e) {
     sud_handle_ajax_error($e);
 }
-
-exit;

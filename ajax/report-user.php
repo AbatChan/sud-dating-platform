@@ -1,21 +1,21 @@
 <?php
 
-require_once(dirname(__FILE__, 2) . '/includes/config.php');
-require_once(dirname(__FILE__, 2) . '/includes/ajax-security.php');
-header('Content-Type: application/json');
+require_once(dirname(__FILE__, 2) . '/includes/ajax-bootstrap.php');
 
 try {
-    // Use centralized security verification
-    $reporter_id = sud_verify_ajax([
+    // Use centralized bootstrap for consistent setup
+    $reporter_id = sud_ajax_bootstrap([
         'methods' => ['POST'],
         'require_auth' => true,
         'require_nonce' => true,
         'nonce_action' => 'sud_ajax_action',
         'rate_limit' => ['requests' => 5, 'window' => 300, 'action' => 'report_user'] // 5 reports per 5 minutes
     ]);
-    $reported_user_id = SUD_AJAX_Security::validate_user_id($_POST['user_id'] ?? 0, false);
-    $reason = isset($_POST['reason']) ? sanitize_text_field($_POST['reason']) : '';
-    $details = isset($_POST['details']) ? sanitize_textarea_field($_POST['details']) : '';
+    
+    // Use centralized input validation
+    $reported_user_id = sud_validate_input($_POST['user_id'] ?? 0, 'user_id');
+    $reason = sud_validate_input($_POST['reason'] ?? '', 'text', ['max_length' => 50]);
+    $details = sud_validate_input($_POST['details'] ?? '', 'textarea', ['max_length' => 1000]);
 
     if (empty($reason)) {
         throw new Exception('You must select a reason for reporting');
@@ -76,7 +76,9 @@ try {
 
     $message .= "View in admin panel: " . admin_url('admin.php?page=sud-user-reports');
     wp_mail($admin_email, $subject, $message);
-    wp_send_json_success(['message' => 'Report submitted successfully']);
+    
+    // Use standardized success response
+    sud_ajax_success(['message' => 'Report submitted successfully']);
     
 } catch (Exception $e) {
     sud_handle_ajax_error($e);
