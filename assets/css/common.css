@@ -1,0 +1,64 @@
+/* Common CSS styles shared across multiple files */
+@import 'variables.css';
+@import 'forms.css';
+@import 'buttons.css';
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    color: var(--sud-text-primary);
+    background-color: var(--sud-bg-light);
+    margin: 0;
+    line-height: 1.6;
+    font-weight: var(--font-weight-normal);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, p, a, strong, label {
+    font-family: var(--font-family);
+}
+
+/* Links */
+a {
+    color: var(--sud-anchor-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--sud-anchor-hover-color) !important;
+}
+
+/* Form Styles and Button Styles are imported at the top */
+
+/* Status Indicators */
+.online-status {
+    display: inline-flex;
+    align-items: center;
+    color: #4CAF50;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+/* Utility Classes */
+.sud-hidden {
+    display: none !important;
+}
+
+/* Import Animations */
+@import 'animations.css'; 

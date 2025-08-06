@@ -1,0 +1,88 @@
+:root {
+    /* Primary Colors */
+    --primary-color: #FF66CC;
+    --primary-hover: #E659B5;
+    --sud-primary: #FF66CC;
+    --sud-primary-hover: #E659B5;
+    --sud-primary-dark: #D64CA6;
+    --sud-secondary: #FF99DD;
+    --sud-primary-light: rgba(255, 102, 204, 0.1);
+    --sud-primary-medium: rgba(255, 102, 204, 0.2);
+
+    /* Text Colors - Dark Theme */
+    --text-color: #FFFFFF;
+    --sud-text-primary: #FFFFFF;
+    --sud-text-secondary: #CCCCCC;
+    --sud-text-muted: #AAAAAA;
+    --sud-text-disabled: #666666;
+    --sud-dark: #FFFFFF; /* Changed from black for visibility */
+    --sud-dark-contrast: #000000; /* For when we need actual black */
+
+    /* Background Colors - Modern Dark Theme */
+    --sud-bg-primary: #0A0A0A;
+    --sud-bg-secondary: #161616;
+    --sud-bg-tertiary: #262626;
+    --dark-bg: rgba(0, 0, 0, 0.9);
+    --sud-light: #FFFFFF;
+    --sud-gray: #393939;
+    --sud-bg-light: #0A0A0A;
+    --sud-white: #fff;
+    --sud-secondary-bg: #1A1A1A;
+    --sud-secondary-bg-hover: #2A2A2A;
+    --sud-card-bg: #161616;
+    --sud-surface: #1E1E1E;
+
+    /* Border Colors - Enhanced for dark theme */
+    --sud-border: #404040;
+    --sud-border-light: #2A2A2A;
+    --sud-border-medium: #505050;
+    --input-border: rgba(255, 102, 204, 0.3);
+    --sud-secondary-border: #505050;
+    --sud-secondary-border-hover: #606060;
+
+    /* Link Colors */
+    --sud-anchor-color: var(--sud-primary);
+    --sud-anchor-hover-color: var(--sud-primary-dark);
+    --sud-secondary-text: #FFFFFF;
+    --sud-secondary-text-hover: #DDDDDD;
+
+    /* Status Colors - Enhanced for dark theme */
+    --sud-success: #10B981;
+    --sud-success-light: rgba(16, 185, 129, 0.1);
+    --sud-danger: #EF4444;
+    --sud-danger-light: rgba(239, 68, 68, 0.1);
+    --sud-warning: #F59E0B;
+    --sud-warning-light: rgba(245, 158, 11, 0.1);
+    --sud-info: #3B82F6;
+    --sud-info-light: rgba(59, 130, 246, 0.1);
+
+    /* Shadows - Enhanced for dark theme */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 20px rgba(255, 102, 204, 0.3);
+
+    /* UI Elements */
+    --button-border-radius: 12px;
+    --card-border-radius: 16px;
+    --input-border-radius: 8px;
+    --font-family: 'Inter', 'Lato', sans-serif;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Spacing Scale */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+
+    /* Animation */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.25s ease;
+    --transition-slow: 0.35s ease;
+} 

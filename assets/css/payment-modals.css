@@ -1,0 +1,347 @@
+/* Universal payment modal styles */
+.payment-modal .sud-modal-content {
+    max-width: 500px;
+}
+
+/* Secure Stripe Elements Styling */
+.stripe-card-element {
+    background: var(--sud-bg-secondary, #161616);
+    border: 1px solid rgba(255, 102, 204, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 8px;
+    transition: border-color 0.25s ease;
+}
+
+.stripe-card-element:focus-within {
+    border-color: var(--sud-primary, #FF66CC);
+    box-shadow: 0 0 0 2px rgba(255, 102, 204, 0.1);
+}
+
+.card-errors {
+    color: var(--sud-danger, #EF4444);
+    font-size: 0.9em;
+    margin-top: 8px;
+    display: none;
+}
+
+.card-errors:not(:empty) {
+    display: block;
+}
+
+/* Custom trial modals removed - now using SUD toast system */
+
+.payment-modal .purchase-info {
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.payment-modal .purchase-info h3 {
+    font-size: 1.8em;
+    color: var(--sud-text-primary, #333);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+.payment-modal .purchase-price {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--sud-primary);
+}
+
+.payment-modal .test-mode-warning {
+    background-color: var(--sud-warning-light);
+    border: 1px solid var(--sud-warning);
+    color: var(--sud-warning);
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+.payment-modal .test-mode-warning i {
+    margin-right: 8px;
+}
+
+.payment-modal .payment-tabs {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--sud-border);
+}
+
+.payment-modal .payment-tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: var(--sud-text-secondary);
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.payment-modal .payment-tab.active {
+    color: var(--sud-primary);
+    border-bottom-color: var(--sud-primary);
+}
+
+.payment-modal .payment-section {
+    display: none;
+}
+
+.payment-modal .payment-section.active {
+    display: block;
+}
+
+#paypal-container-wallet, 
+#paypal-container-premium { 
+    margin-top: 20px; 
+    border-radius: 12px; 
+    overflow: hidden; 
+    transition: all 0.3s; 
+} 
+
+#paypal-section-wallet, 
+#paypal-section-premium,
+#paypal-section-purchase { 
+    background-color: var(--sud-text-primary); 
+    border-radius: 12px; 
+    padding: 20px;
+    text-align: center; 
+    max-height: 400px; 
+    overflow: auto; 
+}
+
+.payment-modal .form-group {
+    margin-bottom: 20px;
+}
+
+.payment-modal .form-label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--sud-text-primary);
+    font-size: 0.95em;
+}
+
+.payment-modal .form-input,
+.payment-modal .card-element {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--sud-border);
+    border-radius: 6px;
+    font-size: 1em;
+    background-color: var(--sud-surface);
+    color: var(--sud-text-primary);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.payment-modal .form-input:focus {
+    border-color: var(--sud-primary);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem var(--sud-primary-light);
+}
+
+.payment-modal .card-element {
+    padding: 12px;
+}
+
+#card-fields-container{
+    background: var(--sud-surface);
+    border-radius: 10px;
+    color: var(--sud-text-primary);
+}
+
+.payment-modal .btn-confirm {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--sud-primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow-md);
+}
+
+.payment-modal .btn-confirm.btn-success {
+    background-color: #28a745;
+    cursor: not-allowed;
+}
+
+.payment-modal .btn-confirm.btn-error {
+    background-color: #dc3545;
+    cursor: not-allowed;
+}
+
+.payment-modal .btn-confirm:hover {
+    background-color: var(--sud-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.payment-modal .btn-confirm:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.payment-modal .btn-confirm:disabled {
+    background-color: var(--sud-disabled);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.payment-modal .paypal-container {
+    display: flex;
+    justify-content: center;
+}
+
+.stripe-card-element {
+    padding: 14px 16px; 
+    border: 1px solid var(--sud-border); 
+    border-radius: 12px; 
+    background-color: var(--sud-surface); 
+    transition: all 0.3s;
+}
+
+.stripe-card-element.StripeElement--focus {
+    border-color: var(--sud-primary); 
+    background-color: var(--sud-card-bg); 
+    box-shadow: 0 0 0 3px var(--sud-primary-light);
+} 
+
+.stripe-card-element.StripeElement--invalid {
+    border-color: var(--sud-danger);
+}
+
+/* Choice Modal Styles */
+.payment-modal .choice-options {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.payment-modal .choice-option {
+    background: var(--sud-surface);
+    border: 2px solid var(--sud-border);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.payment-modal .choice-option:hover {
+    border-color: var(--sud-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.payment-modal .choice-option.payment-option {
+    border-color: var(--sud-primary);
+}
+
+.payment-modal .choice-option .option-header {
+    margin-bottom: 15px;
+}
+
+.payment-modal .choice-option .option-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.payment-modal .choice-option h4 {
+    color: var(--sud-text-primary);
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.payment-modal .choice-option .option-price {
+    color: var(--sud-primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.payment-modal .choice-option .option-description {
+    color: var(--sud-text-secondary);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.payment-modal .choice-footer {
+    color: var(--sud-text-muted);
+    font-size: 13px;
+    text-align: center;
+    margin: 0;
+}
+
+/* Choice modal action buttons (styled like btn-confirm but separate class) */
+.payment-modal .btn-choice-action {
+    width: 100%;
+    padding: 14px 28px;
+    background-color: var(--sud-primary);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: var(--shadow-sm);
+}
+
+.payment-modal .btn-choice-action:hover {
+    background-color: var(--sud-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.payment-modal .btn-choice-action:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.payment-modal .btn-choice-action:disabled {
+    background-color: var(--sud-disabled);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .payment-modal .sud-modal-content {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .payment-modal .purchase-info h3 {
+        font-size: 1.5em;
+    }
+
+    .payment-modal .purchase-price {
+        font-size: 1.3em;
+    }
+
+    .payment-modal .payment-tab {
+        padding: 8px 10px;
+        font-size: 0.9em;
+        flex-grow: 1; 
+        text-align: center;
+    }
+    
+    .payment-modal .choice-option {
+        padding: 20px;
+    }
+} 

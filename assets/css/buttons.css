@@ -1,0 +1,418 @@
+@import 'variables.css';
+
+/* Button Base Styles */
+.btn,
+.sud-button {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    border: 1px solid transparent;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: var(--button-border-radius);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Primary Buttons */
+.btn-primary,
+.sud-button.sud-button-primary,
+.sud-join-btn,
+.sud-login-btn,
+.sud-continue-btn,
+.sud-next-btn.active,
+.sud-modal-continue {
+    background-color: var(--sud-primary);
+    border-color: var(--sud-primary);
+    color: white;
+}
+
+.btn-primary:hover,
+.sud-button.sud-button-primary:hover,
+.sud-join-btn:hover,
+.sud-login-btn:hover,
+.sud-continue-btn:hover,
+.sud-next-btn.active:hover,
+.sud-modal-continue:hover {
+    background-color: var(--sud-primary-hover);
+    color: #fff !important;
+    border-color: var(--sud-primary-hover);
+}
+
+/* Secondary Buttons */
+.btn-secondary,
+.sud-prev-btn,
+.sud-join-free-btn,
+.sud-back-button {
+    background-color: var(--sud-surface);
+    border-color: var(--sud-border);
+    color: var(--sud-text-primary);
+}
+
+.btn-secondary:hover,
+.sud-prev-btn:hover,
+.sud-join-free-btn:hover,
+.sud-back-button:hover {
+    background-color: var(--sud-secondary-bg-hover);
+    border-color: var(--sud-border-medium);
+    color: var(--sud-text-primary);
+}
+
+/* Danger Buttons */
+.btn-danger {
+    background-color: var(--sud-danger);
+    border-color: var(--sud-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    color: white;
+    border-color: #bd2130;
+}
+
+/* Disabled Buttons */
+.btn:disabled,
+.sud-button:disabled,
+.sud-next-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* Full Width Buttons */
+.sud-button.sud-button-fullwidth,
+.sud-login-btn,
+.sud-join-btn {
+    width: 100%;
+    display: block;
+}
+
+/* Button with Icons */
+.btn i,
+.sud-button i {
+    margin-right: 5px;
+}
+
+/* Small Buttons */
+.sud-button.sud-button-small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Action Buttons */
+.sud-option-button {
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.sud-option-button:hover {
+    border-color: white;
+}
+
+.sud-option-button.selected,
+.sud-option-button:active {
+    background-color: var(--sud-surface);
+    color: var(--sud-primary);
+    border-color: var(--sud-primary);
+}
+
+/* Skip Links */
+.sud-skip-link,
+.sud-skip-all-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.sud-skip-link:hover,
+.sud-skip-all-link:hover {
+    color: white;
+}
+
+/* Message and Action Buttons */
+.message-btn,
+.view-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.message-btn {
+    background-color: var(--sud-primary);
+    color: white;
+}
+
+.message-btn:hover {
+    background-color: var(--sud-primary-hover);
+    color: white !important;
+}
+
+.view-profile-btn {
+    background-color: var(--sud-surface);
+    color: var(--sud-text-primary);
+}
+
+.view-profile-btn:hover {
+    background-color: var(--sud-secondary-bg-hover);
+}
+
+.message-btn i {
+    margin-right: 5px;
+}
+
+/* User Action Buttons */
+.user-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    z-index: 2;
+}
+
+.user-actions .view-profile-btn,
+.user-actions .message-btn {
+    flex: 1;
+}
+
+/* Swipe Action Buttons */
+.swipe-action-btn {
+    background-color: var(--sud-card-bg);
+    border: 1px solid var(--sud-border);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: all 0.2s ease-in-out;
+    -webkit-tap-highlight-color: transparent;
+    color: var(--sud-text-primary);
+}
+
+.swipe-action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-lg);
+}
+
+.swipe-action-btn:active {
+    transform: scale(0.95);
+    box-shadow: var(--shadow-sm);
+}
+
+.swipe-action-btn i {
+    font-size: 28px;
+}
+
+.swipe-action-btn.pass i { color: #fd5068; }
+.swipe-action-btn.like i { color: #2dbd7e; }
+.swipe-action-btn.reverse i { color: #C0C0C0; }
+
+.swipe-action-btn.pass:hover {
+    border-color: #fd5068;
+    box-shadow: 0 0 15px rgba(253, 80, 104, 0.4);
+}
+
+.swipe-action-btn.like:hover {
+    border-color: #2dbd7e;
+    box-shadow: 0 0 15px rgba(45, 189, 126, 0.4);
+}
+
+.swipe-action-btn.reverse:hover {
+    border-color: #C0C0C0;
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.5);
+    transform: scale(1.1);
+}
+
+.swipe-action-btn.reverse:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.swipe-action-btn.reverse:disabled:hover {
+    transform: none;
+    border-color: var(--sud-border);
+    box-shadow: var(--shadow-md);
+}
+
+/* Boost Button */
+.swipe-action-btn.boost {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #ff4081, #ff6b6b);
+    border: none;
+    position: relative;
+    box-shadow: 0 6px 15px rgba(255, 64, 129, 0.4);
+    animation: pulse-boost 2s infinite;
+}
+
+.swipe-action-btn.boost i {
+    color: white;
+    font-size: 30px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.swipe-action-btn.boost:hover {
+    background: linear-gradient(135deg, #ff6b6b, #ff4081);
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(255, 64, 129, 0.5);
+}
+
+.swipe-action-btn.boost:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(255, 64, 129, 0.5);
+}
+
+/* Premium and Upgrade Buttons */
+.btn-premium-upgrade {
+    background-color: var(--sud-primary-light);
+    border-color: var(--sud-primary);
+    color: var(--sud-primary);
+    font-weight: 600;
+}
+
+.btn-premium-upgrade:hover {
+    background-color: var(--sud-primary-medium);
+    border-color: var(--sud-primary-hover);
+}
+
+.btn-sidebar {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background-color: var(--sud-surface);
+    color: var(--sud-text-primary);
+    border: 1px solid var(--sud-border);
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-sidebar:hover {
+    background-color: var(--sud-secondary-bg-hover);
+    border-color: var(--sud-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Compact and Small Buttons */
+.btn-compact {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    border-radius: 6px;
+}
+
+.btn-icon-only {
+    padding: 8px;
+    width: auto;
+    min-width: 40px;
+}
+
+/* View Profile Button for Swipe Cards */
+.view-profile-btn-swipe {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.85);
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 8px;
+    transition: all 0.2s ease;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.view-profile-btn-swipe i {
+    margin-right: 5px;
+}
+
+.view-profile-btn-swipe:hover {
+    background-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.view-profile-btn-swipe:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Button Animations */
+@keyframes pulse-boost {
+    0% { box-shadow: 0 0 0 0 rgba(255, 64, 129, 0.6); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 64, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 64, 129, 0); }
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .sud-mobile-navigation .sud-next-btn,
+    .sud-mobile-navigation .sud-prev-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .sud-option-button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .user-actions {
+        flex-direction: column;
+    }
+
+    .view-profile-btn,
+    .message-btn {
+        width: 100%;
+        padding: 8px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .swipe-action-btn {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .swipe-action-btn.boost {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .swipe-action-btn i {
+        font-size: 22px;
+    }
+    
+    .swipe-action-btn.boost i {
+        font-size: 24px;
+    }
+
+    .swipe-action-btn.reverse i {
+        font-size: 20px;
+    }
+} 

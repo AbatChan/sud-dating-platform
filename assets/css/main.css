@@ -1,0 +1,39 @@
+/* Main CSS File - Modern Dark Theme Architecture */
+
+/* === FOUNDATION === */
+/* Import Variables First - Contains all design tokens */
+@import 'variables.css';
+
+/* Import Utilities - Modern utility classes */
+@import 'utilities.css';
+
+/* === CORE COMPONENTS === */
+/* Base styles and common components */
+@import 'common.css';
+@import 'forms.css';
+@import 'buttons.css';
+@import 'modals.css';
+@import 'animations.css';
+
+/* === PAGE-SPECIFIC STYLES === */
+/* Main application pages */
+@import 'style.css';
+@import 'dashboard.css';
+@import 'profile.css';
+@import 'swipe.css';
+@import 'search.css';
+@import 'messages.css';
+@import 'activity.css';
+@import 'settings.css';
+@import 'wallet.css';
+@import 'premium.css';
+
+/* === FEATURE COMPONENTS === */
+/* Specialized components and features */
+@import 'user-card.css';
+@import 'welcome-modal.css';
+@import 'payment-modals.css';
+@import 'messages-modals.css';
+@import 'dashboard-modals.css';
+@import 'dashboard-filter-drawer.css';
+@import 'profile-edit.css'; 

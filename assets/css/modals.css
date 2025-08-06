@@ -1,0 +1,582 @@
+@import "variables.css";
+
+/* Modal Base Styles */
+.modal,
+.sud-modal,
+.payment-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+    backdrop-filter: blur(5px);
+}
+
+.modal.show,
+.sud-modal.show,
+.payment-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sud-modal-content,
+.modal-content {
+    background-color: var(--sud-card-bg);
+    border: 1px solid var(--sud-border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-xl);
+    width: 90%;
+    max-width: 500px;
+    padding: 30px;
+    transform: translateY(20px);
+    opacity: 0;
+    text-align: center;
+    transition: transform 0.3s, opacity 0.3s;
+    position: relative;
+    color: var(--sud-text-primary);
+}
+
+.modal.show .sud-modal-content,
+.sud-modal.show .sud-modal-content,
+.payment-modal.show .sud-modal-content,
+.modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.premium-modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Modal Close Button */
+.modal-close,
+.sud-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--sud-text-secondary);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover,
+.sud-modal-close:hover {
+    color: var(--sud-text-primary);
+}
+
+/* Modal Header Styles */
+.modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+    animation: fadeInDown 0.6s ease-out 0.1s both;
+}
+
+.modal h2,
+.modal h3 {
+    margin: 0 0 15px;
+    font-weight: 700;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.modal p {
+    margin-bottom: 20px;
+    line-height: 1.6;
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+/* Modal Actions */
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+    animation: fadeInUp 0.6s ease-out 0.6s both;
+}
+
+.modal-actions .btn {
+    border-radius: 50px;
+    padding: 14px 24px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-actions .btn:hover {
+    transform: translateY(-3px);
+}
+
+/* Premium Modal Actions */
+.premium-modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Modal Content Variations */
+.sud-modal-content.large {
+    max-width: 700px;
+}
+
+.sud-modal-content.medium {
+    max-width: 600px;
+}
+
+.sud-modal-content.small {
+    max-width: 400px;
+}
+
+/* Modal Text Content */
+.modal-text-center {
+    text-align: center;
+}
+
+.modal-text-left {
+    text-align: left;
+}
+
+/* Lists in Modals */
+.upgrade-benefits-list,
+.modal-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    text-align: left;
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.upgrade-benefits-list li,
+.modal-list li {
+    padding: 12px 15px;
+    margin: 10px 0;
+    background: var(--sud-surface);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--sud-text-primary);
+    font-size: 1em;
+    box-shadow: var(--shadow-sm);
+    border-left: 3px solid var(--sud-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.upgrade-benefits-list li:hover,
+.modal-list li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.upgrade-benefits-list li i,
+.modal-list li i {
+    color: var(--sud-primary);
+    font-size: 1.2em;
+    width: 24px;
+    text-align: center;
+    filter: drop-shadow(0 1px 2px rgba(255, 102, 204, 0.3));
+}
+
+/* Modal Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Specific Modal Types */
+.match-modal .modal-content {
+    text-align: center;
+    padding-top: 40px;
+}
+
+.match-animation-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    height: 120px;
+}
+
+.match-animation-container img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--sud-white);
+    box-shadow: var(--shadow-lg);
+    position: absolute;
+}
+
+#match-user1-img {
+    transform: translateX(-30px) rotate(-10deg);
+}
+
+#match-user2-img {
+    transform: translateX(30px) rotate(10deg);
+}
+
+.match-heart-icon {
+    font-size: 2.5em;
+    color: #ff4081;
+    position: relative;
+    z-index: 10;
+    animation: matchHeartBeat 0.8s ease-in-out infinite;
+}
+
+@keyframes matchHeartBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* No Dismiss Modal */
+.claim-modal-no-dismiss {
+    pointer-events: auto !important;
+}
+
+.claim-modal-no-dismiss .sud-modal-content {
+    pointer-events: auto !important;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .sud-modal-content,
+    .modal-content {
+        width: 95%;
+        padding: 25px;
+    }
+    
+    .premium-modal-actions {
+        display: grid;
+    }
+    
+    .modal-icon {
+        font-size: 2.5em;
+        margin-bottom: 15px;
+    }
+    
+    .modal h2,
+    .modal h3 {
+        font-size: 1.8em;
+    }
+    
+    .modal p {
+        font-size: 0.9em;
+    }
+    
+    .upgrade-benefits-list li,
+    .modal-list li {
+        padding: 10px 12px;
+        font-size: 0.9em;
+        gap: 8px;
+    }
+    
+    .upgrade-benefits-list li i,
+    .modal-list li i {
+        font-size: 1.1em;
+        width: 20px;
+    }
+    
+    .modal-actions .btn {
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .sud-modal-content,
+    .modal-content {
+        width: 100%;
+        padding: 20px;
+        border-radius: 10px;
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+    
+    .match-animation-container {
+        height: 100px;
+        margin-bottom: 20px;
+    }
+    
+    .match-animation-container img {
+        width: 70px;
+        height: 70px;
+        border-width: 3px;
+    }
+    
+    #match-user1-img {
+        transform: translateX(-45px) rotate(-15deg);
+    }
+    
+    #match-user2-img {
+        transform: translateX(45px) rotate(15deg);
+    }
+    
+    .match-heart-icon i {
+        font-size: 1.8em;
+    }
+}
+
+/* =====================================================
+   TRIAL MODAL STYLES
+   ===================================================== */
+
+#trial-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    overflow-y: auto;
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+#trial-modal.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.trial-info {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.trial-info h3 {
+    margin: 0 0 10px 0;
+    color: var(--sud-primary);
+}
+
+.trial-info h4 {
+    margin: 0 0 15px 0;
+    color: var(--sud-text-primary);
+}
+
+.trial-price-highlight {
+    background: var(--sud-surface);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid var(--sud-border);
+}
+
+.trial-price-highlight p:first-child {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--sud-primary);
+}
+
+.trial-price-highlight p:last-child {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    color: var(--sud-text-secondary);
+}
+
+.trial-policy-text {
+    margin: 0;
+    font-size: 14px;
+    color: var(--sud-text-secondary);
+}
+
+.trial-policy-text a {
+    color: var(--sud-primary);
+    text-decoration: none;
+}
+
+.trial-policy-text a:hover {
+    text-decoration: underline;
+}
+
+
+#trial-form {
+    margin-top: 20px;
+}
+
+#trial-form .payment-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--sud-border);
+    margin-bottom: 20px;
+}
+
+#trial-form .payment-tab {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+#trial-form .payment-tab.active {
+    border-bottom-color: var(--sud-primary);
+    color: var(--sud-primary);
+    font-weight: 600;
+}
+
+#trial-form .payment-section {
+    display: none;
+}
+
+#trial-form .payment-section.active {
+    display: block;
+}
+
+#trial-form .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+#trial-form .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--sud-text-primary);
+}
+
+#trial-form .form-group label::after {
+    content: " *";
+    color: var(--sud-primary);
+}
+
+#trial-form .form-group input,
+#trial-form .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--sud-border);
+    border-radius: 6px;
+    font-size: 1em;
+    background-color: var(--sud-surface);
+    color: var(--sud-text-primary);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-sizing: border-box;
+}
+
+#trial-form .form-group input:focus,
+#trial-form .form-group select:focus {
+    outline: none;
+    border-color: var(--sud-primary);
+    box-shadow: 0 0 0 0.2rem var(--sud-primary-light);
+}
+
+.card-details {
+    display: flex;
+    gap: 15px;
+}
+
+.card-details .form-group {
+    flex: 1;
+}
+
+.choice-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+#start-trial-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--sud-primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+#start-trial-btn:hover {
+    background-color: var(--sud-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#start-trial-btn:disabled {
+    background-color: var(--sud-disabled, #ccc);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.trial-form-error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+}
+
+.trial-form-success {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 10px;
+    display: none;
+}
+
+.trial-footer-text {
+    margin: 15px 0 0 0;
+    font-size: 12px;
+    color: var(--sud-text-secondary);
+    text-align: center;
+}
+
+.trial-footer-text a {
+    color: var(--sud-primary);
+    text-decoration: none;
+}
+
+.trial-footer-text a:hover {
+    text-decoration: underline;
+}

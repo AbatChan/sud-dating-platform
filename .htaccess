@@ -1,0 +1,158 @@
+# SUD Production .htaccess (sub-directory install)
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Sub-folder install
+  RewriteBase /wordpress/sud/
+
+  # --- Canonical HTTPS --- (disabled for local development)
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # 👉 Pick ONE canonical-domain block and uncomment
+  # -- non-www --
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^(.*)$ https://%1/$1  [R=301,L]
+
+  # -- www --
+  # RewriteCond %{HTTP_HOST} !^www\. [NC]
+  # RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1  [R=301,L]
+  # ------------------------------------
+
+  # Strip explicit index.php
+  RewriteCond %{THE_REQUEST} \s/index\.php [NC]
+  RewriteRule ^index\.php$ /wordpress/sud/ [R=301,L]
+
+  # Pretty URLs ➜ .php
+  RewriteCond %{REQUEST_URI} !\.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^(.+?)/?$ $1.php [L]
+
+  # Pretty URLs ➜ .html
+  RewriteCond %{REQUEST_URI} !\.
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^([^/]+)/?$ $1.html [L]
+</IfModule>
+
+# --------------- Security Headers ---------------
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' cdnjs.cloudflare.com js.stripe.com www.paypal.com *.paypal.com code.jquery.com maps.googleapis.com; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com code.jquery.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com; img-src 'self' data: blob: *.stripe.com *.paypal.com *.paypalobjects.com maps.gstatic.com; connect-src 'self' api.stripe.com *.paypal.com maps.googleapis.com; frame-src 'self' js.stripe.com *.paypal.com; media-src 'self'; worker-src 'self' blob:;"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=()"
+</IfModule>
+
+# --------------- Performance ---------------
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpg              "access plus 1 year"
+  ExpiresByType image/jpeg             "access plus 1 year"
+  ExpiresByType image/gif              "access plus 1 year"
+  ExpiresByType image/png              "access plus 1 year"
+  ExpiresByType image/webp             "access plus 1 year"
+  ExpiresByType image/svg+xml          "access plus 1 year"
+  ExpiresByType text/css               "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/javascript        "access plus 1 month"
+  ExpiresByType font/woff              "access plus 1 year"
+  ExpiresByType font/woff2             "access plus 1 year"
+  ExpiresDefault                       "access plus 1 month"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/javascript application/javascript application/x-javascript application/rss+xml application/xhtml+xml application/xml font/ttf font/otf font/opentype font/vnd.ms-fontobject image/svg+xml image/x-icon
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+  Header append Vary User-Agent
+</IfModule>
+
+# Cache-Control
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|png|jpe?g|gif|webp|svg|woff2?|ttf|eot)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html?|htm)$">
+    Header set Cache-Control "public, max-age=3600"
+  </FilesMatch>
+  <FilesMatch "\.php$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+  </FilesMatch>
+</IfModule>
+
+# --------------- Hardening ---------------
+<FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|md)$">
+  Require all denied
+</FilesMatch>
+
+<Files ~ "^\.ht">
+  Require all denied
+</Files>
+
+<Files wp-config.php>
+  Require all denied
+</Files>
+
+# Sensitive dirs
+RedirectMatch 403 ^/wordpress/sud/(includes|vendor|logs)/.*$
+
+ServerSignature Off
+Options -Indexes
+
+DirectoryIndex index.php index.html
+
+# Upload dir – stop script execution
+<FilesMatch "\.(php|phtml|php[0-9]|pl|py|jsp|asp|sh|cgi)$">
+  <IfModule mod_version.c>
+    <If "%{REQUEST_URI} =~ m#/wordpress/sud/uploads/#">
+      Require all denied
+    </If>
+  </IfModule>
+</FilesMatch>
+
+# Fallback (hosts w/o mod_version) - Directory directives removed for .htaccess compatibility
+# Note: Directory directives cannot be used in .htaccess files
+
+# Block obvious backups/tmp
+<FilesMatch "\.(bak|backup|old|orig|tmp|temp|~)$">
+  Require all denied
+</FilesMatch>
+
+# --------------- PHP Tweaks ---------------
+<IfModule mod_php.c>
+  php_flag  expose_php               Off
+  php_value session.cookie_httponly  1
+  php_value session.cookie_secure    1
+  php_value session.use_only_cookies 1
+  php_value upload_max_filesize      10M
+  php_value post_max_size            10M
+  php_value max_execution_time       30
+  php_value memory_limit             128M
+</IfModule>
+
+# Extra MIME types
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType text/css              .css
+  AddType image/webp            .webp
+  AddType font/woff             .woff
+  AddType font/woff2            .woff2
+</IfModule>
+
+# Error docs
+ErrorDocument 404 /wordpress/sud/error.html
+ErrorDocument 500 /wordpress/sud/error.html
+ErrorDocument 403 /wordpress/sud/error.html
+
+# Keep-Alive hint
+<IfModule mod_headers.c>
+  Header set Connection keep-alive
+</IfModule>

@@ -1,0 +1,179 @@
+#dashboard-filter-modal .sud-modal-content {
+    max-width: 600px;
+}
+
+#dashboard-filter-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-md);
+    margin-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--sud-border-light);
+}
+
+#dashboard-filter-modal .modal-title {
+    font-size: 1.6em;
+    font-weight: var(--font-weight-bold);
+    color: var(--sud-text-primary);
+    margin: 0;
+}
+
+#dashboard-filter-modal .modal-body {
+    padding-top: 0;
+}
+
+#dashboard-filter-modal .filter-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+#dashboard-filter-modal .filter-group label:not(.checkbox-label) {
+    text-align: left;
+    display: block;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-xs);
+    color: var(--sud-text-primary);
+}
+
+#dashboard-filter-modal .filter-select,
+#dashboard-filter-modal .filter-input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-sm);
+    border: 1px solid var(--sud-border);
+    border-radius: var(--input-border-radius);
+    font-size: 1em;
+    background-color: var(--sud-surface);
+    color: var(--sud-text-primary);
+    font-family: var(--font-family);
+    transition: all var(--transition-normal);
+}
+
+#dashboard-filter-modal .filter-select:focus,
+#dashboard-filter-modal .filter-input:focus {
+    outline: none;
+    border-color: var(--sud-primary);
+    box-shadow: 0 0 0 3px var(--sud-primary-light);
+    background-color: var(--sud-secondary-bg);
+}
+
+#dashboard-filter-modal .filter-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23FF66CC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+#dashboard-filter-modal .filter-age-inputs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#dashboard-filter-modal .filter-age-inputs span {
+    font-weight: var(--font-weight-medium);
+    color: var(--sud-text-secondary);
+}
+
+#dashboard-filter-modal .filter-age-inputs .age-input {
+    width: 80px; /* Smaller inputs for age */
+}
+
+#dashboard-filter-modal .filter-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#dashboard-filter-modal .checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: var(--font-weight-medium);
+    color: var(--sud-text-primary);
+    padding: var(--space-sm);
+    border-radius: var(--input-border-radius);
+    background-color: var(--sud-surface);
+    border: 1px solid var(--sud-border);
+    transition: all var(--transition-normal);
+    margin-bottom: var(--space-xs);
+}
+
+#dashboard-filter-modal .checkbox-label:hover {
+    background-color: var(--sud-primary-light);
+    border-color: var(--sud-primary);
+    transform: translateX(2px);
+}
+
+#dashboard-filter-modal .checkbox-label.selected {
+    background-color: var(--sud-primary-medium);
+    border-color: var(--sud-primary);
+    font-weight: var(--font-weight-semibold);
+    transform: translateX(5px);
+}
+
+#dashboard-filter-modal .checkbox-label input[type="checkbox"] {
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+}
+
+#dashboard-filter-modal .checkbox-label.disabled {
+    color: var(--sud-text-disabled);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+#dashboard-filter-modal .premium-tag {
+    font-size: 0.8em;
+    font-weight: var(--font-weight-normal);
+    color: var(--sud-primary);
+    margin-left: 5px;
+    padding: 2px 8px;
+    background-color: var(--sud-primary-light);
+    border-radius: 12px;
+    transition: all var(--transition-fast);
+}
+
+#dashboard-filter-modal .locked-filter .filter-lock-overlay-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--input-border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-normal);
+}
+
+#dashboard-filter-modal .locked-filter .filter-lock-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--sud-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+#dashboard-filter-modal .locked-filter .filter-lock-overlay i {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+#dashboard-filter-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-sm);
+    padding-top: var(--space-lg);
+    margin-top: var(--space-sm);
+    border-top: 1px solid var(--sud-border-light);
+}

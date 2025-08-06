@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swipe Up Daddy - Something went wrong</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff4081;
+            --primary-hover: #ff6b6b;
+            --text-color: #fff;
+            --dark-bg: #000000;
+            --secondary-bg: rgba(0, 0, 0, 0.55);
+            --button-border-radius: 50px;
+            --font-family: 'Lato', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--dark-bg);
+            background-image: url('/sud/assets/img/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--secondary-bg);
+            z-index: -1;
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 500px;
+            z-index: 1;
+        }
+        
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .reload-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: var(--button-border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .reload-btn:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .help-text {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .logo {
+            margin-bottom: 2rem;
+        }
+        
+        .logo img {
+            height: 55px;
+        }
+        
+        @media (max-width: 576px) {
+            .error-container {
+                padding: 1.5rem;
+            }
+            
+            .error-icon {
+                font-size: 3rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="logo">
+            <img src="/sud/assets/img/logo.png" alt="Swipe Up Daddy">
+        </div>
+        <div class="error-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h1>Something went wrong</h1>
+        <p>We're having trouble connecting to our service. Please check your internet connection and try again.</p>
+        <button class="reload-btn" onclick="window.location.reload();">Reload</button>
+        <p class="help-text">Clear your cache if the problem persists</p>
+    </div>
+    
+    <script>
+        // Check connection status periodically
+        function checkConnection() {
+            if (navigator.onLine) {
+                // If connection restored, try reloading automatically after a delay
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            }
+        }
+        
+        // Check connection every 5 seconds
+        setInterval(checkConnection, 5000);
+    </script>
+</body>
+</html>

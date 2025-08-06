@@ -1,0 +1,248 @@
+/* Ban and Warning System Styles - Dark Theme */
+
+/* Ban Notice Full Screen Overlay */
+.sud-ban-notice {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Lato", sans-serif;
+}
+
+.sud-ban-content {
+    background: #161616;
+    color: #FFFFFF;
+    padding: 40px;
+    border-radius: 16px;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 102, 204, 0.2);
+    border: 1px solid #404040;
+}
+
+.sud-ban-content h2 {
+    color: #EF4444;
+    margin-bottom: 20px;
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.sud-ban-content p {
+    color: #CCCCCC;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.sud-ban-content p strong {
+    color: #FFFFFF;
+}
+
+.sud-ban-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Warning Notice Floating */
+.sud-warning-notice {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #262626;
+    border: 2px solid #F59E0B;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 400px;
+    z-index: 1000;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 0 20px rgba(245, 158, 11, 0.2);
+    font-family: "Lato", sans-serif;
+    color: #FFFFFF;
+}
+
+.sud-warning-content h3 {
+    color: #F59E0B;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-family: "Lato", sans-serif;
+    font-weight: 600;
+}
+
+.sud-warning-content p {
+    color: #CCCCCC;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.sud-warning-content p strong {
+    color: #FFFFFF;
+}
+
+.sud-warning-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Button Styles */
+.sud-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: "Lato", sans-serif;
+    transition: all 0.25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sud-button-primary {
+    background: #FF66CC;
+    color: #FFFFFF;
+}
+
+.sud-button-primary:hover {
+    background: #E659B5;
+    transform: translateY(-1px);
+}
+
+.sud-button-secondary {
+    background: #262626;
+    color: #FFFFFF;
+    border: 1px solid #404040;
+}
+
+.sud-button-secondary:hover {
+    background: #2A2A2A;
+    border-color: #505050;
+    transform: translateY(-1px);
+}
+
+/* Warning Action Buttons (smaller) */
+.sud-warning-actions .sud-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sud-warning-actions .sud-button-primary {
+    background: #FF66CC;
+    color: #FFFFFF;
+}
+
+.sud-warning-actions .sud-button-primary:hover {
+    background: #E659B5;
+    transform: translateY(-1px);
+}
+
+.sud-warning-actions .sud-button-secondary {
+    background: #161616;
+    color: #FFFFFF;
+    border: 1px solid #404040;
+}
+
+.sud-warning-actions .sud-button-secondary:hover {
+    background: #1A1A1A;
+    border-color: #505050;
+    transform: translateY(-1px);
+}
+
+/* Body scroll lock when ban notice is displayed */
+body.sud-banned {
+    overflow: hidden !important;
+}
+
+/* System Notification Icons */
+.system-notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #FFFFFF;
+    flex-shrink: 0;
+    margin-right: 12px;
+}
+
+.ban-icon {
+    background-color: #EF4444;
+    border: 2px solid #DC2626;
+}
+
+.warning-icon {
+    background-color: #F59E0B;
+    border: 2px solid #D97706;
+}
+
+.unban-icon {
+    background-color: #10B981;
+    border: 2px solid #059669;
+}
+
+.boost-icon {
+    background-color: #9B59B6;
+    border: 2px solid #8E44AD;
+}
+
+.coins-icon {
+    background-color: #F2D04F;
+    border: 2px solid #E6C946;
+    color: #161616;
+}
+
+.super-swipe-icon {
+    background-color: #E91E63;
+    border: 2px solid #C2185B;
+}
+
+/* Notification skeleton updates for system icons */
+.notification-skeleton .skeleton-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #262626;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sud-ban-content {
+        margin: 20px;
+        padding: 30px 20px;
+        max-width: none;
+    }
+    
+    .sud-ban-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .sud-warning-notice {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+    
+    .system-notification-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+}

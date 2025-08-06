@@ -1,0 +1,271 @@
+.activity-tabs {
+	display: flex;
+	border-bottom: 1px solid var(--sud-border) !important;
+	margin-bottom: 20px;
+	flex-wrap: nowrap;
+	overflow-x: auto;
+}
+
+.activity-content :where(h1, h2, h3, h4, h5, p, a:not(.upgrade-prompt-overlay):not(.upgrade-prompt-overlay-more), strong, label) {
+	color: var(--sud-text-primary) !important;
+}
+
+.activity-tab {
+	padding: 12px 16px;
+	font-weight: 600;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+	color: var(--sud-text-primary) !important;
+	cursor: pointer;
+	position: relative;
+	text-decoration: none;
+	white-space: nowrap;
+	min-width: fit-content;
+	flex-shrink: 0;
+	border-radius: 8px 8px 0 0;
+	transition: all 0.2s ease;
+}
+
+.activity-tab .tab-text {
+	font-size: 0.9em;
+	font-weight: 600;
+}
+
+.activity-tab .count-badge {
+	background-color: var(--sud-primary);
+	color: white;
+	border-radius: 10px;
+	padding: 2px 6px;
+	font-size: 0.75em;
+	font-weight: 700;
+	min-width: 16px;
+	text-align: center;
+	line-height: 1.2;
+}
+
+.activity-tab.active {
+	color: var(--sud-primary) !important;
+}
+
+/* Locked Tab Styles - Keep tabs active */
+.activity-tab.locked-tab {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.activity-tab .tab-lock-icon {
+	font-size: 0.8em;
+	color: var(--sud-primary);
+	opacity: 0.9;
+}
+
+/* Locked Content Styles */
+.locked-content {
+	position: relative;
+}
+
+.locked-content .user-list {
+	filter: blur(0.5px);
+	transition: all 0.3s ease;
+}
+
+/* Don't blur no-items sections */
+.locked-content .no-items {
+	filter: none !important;
+	opacity: 1 !important;
+}
+
+/* Locked User Cards */
+.locked-user-card {
+	position: relative;
+}
+
+/* Lock icon positioned at middle-right - not blurred */
+.locked-user-card::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	transform: translateY(-50%);
+	width: 32px;
+	height: 32px;
+	background: var(--sud-primary);
+	border-radius: 50%;
+	z-index: 100;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+	filter: none;
+}
+
+.locked-user-card::before {
+	content: '\f023';
+	font-family: 'Font Awesome 6 Free';
+	font-weight: 900;
+	position: absolute;
+	top: 50%;
+	right: 25px;
+	transform: translateY(-50%);
+	color: white;
+	font-size: 14px;
+	z-index: 101;
+	cursor: pointer;
+	filter: none;
+}
+
+.upgrade-notice {
+	text-align: center;
+	padding: 10px 15px;
+	background-color: var(--sud-info-light);
+	border: 1px solid var(--sud-border);
+	border-radius: 8px;
+	margin-bottom: 20px;
+	color: var(--sud-text-primary);
+	font-weight: 500;
+}
+
+.activity-tab.active::after {
+	content: '';
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background-color: var(--sud-primary) !important;
+}
+
+.tab-content {
+	display: none;
+}
+
+.tab-content.active {
+	display: block;
+}
+
+.no-items {
+	text-align: center;
+	padding: 40px 20px;
+	color: var(--sud-text-muted) !important;
+}
+
+.no-items i {
+	font-size: 40px;
+	margin-bottom: 15px;
+	color: var(--sud-text-disabled) !important;
+}
+
+.no-items h3 {
+	font-size: 18px;
+	margin-bottom: 10px;
+	color: var(--sud-text-primary);
+}
+
+.no-items p {
+	font-size: 14px;
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+.no-activity {
+	text-align: center;
+	padding: 40px 20px;
+	color: var(--sud-text-muted) !important;
+}
+
+.no-activity i {
+	font-size: 40px;
+	margin-bottom: 15px;
+	color: var(--sud-text-disabled) !important;
+}
+
+.no-activity p {
+	font-size: 14px;
+	max-width: 400px;
+	margin: 0 auto 10px auto;
+	color: var(--sud-text-secondary) !important;
+}
+
+.favorite-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 20px;
+}
+
+/* Legacy styles removed - using locked-user-card instead */
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+	.activity-tabs {
+		overflow-x: auto;
+		white-space: nowrap;
+		padding-bottom: 5px;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+	
+	.activity-tabs::-webkit-scrollbar {
+		display: none;
+	}
+
+	.activity-tab {
+		padding: 10px 12px;
+		font-size: 0.85em;
+		min-width: 70px;
+	}
+	
+	.activity-tab .tab-text {
+		font-size: 0.8em;
+	}
+	
+	.activity-tab .count-badge {
+		font-size: 0.7em;
+		padding: 1px 4px;
+	}
+	
+	.upgrade-notice {
+		padding: 15px;
+		font-size: 0.9em;
+	}
+	
+	.upgrade-notice .btn {
+		margin-top: 10px;
+		margin-left: 0 !important;
+		display: block;
+		width: 100%;
+	}
+}
+
+@media (max-width: 480px) {
+	.activity-tab {
+		padding: 8px 10px;
+		gap: 4px;
+	}
+	
+	.activity-tab .tab-text {
+		display: none;
+	}
+	
+	.activity-tab .count-badge {
+		position: absolute;
+		top: 2px;
+		right: 2px;
+		min-width: 12px;
+		height: 12px;
+		font-size: 0.6em;
+		padding: 0;
+		line-height: 12px;
+	}
+	
+	/* Adjust lock icon size for mobile */
+	.locked-user-card::after {
+		width: 28px;
+		height: 28px;
+		right: 10px;
+	}
+	
+	.locked-user-card::before {
+		right: 19px;
+		font-size: 12px;
+	}
+}

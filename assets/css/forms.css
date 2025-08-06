@@ -1,0 +1,45 @@
+@import 'variables.css';
+
+/* Basic form input styles are handled in style.css - keeping only has-value styles here */
+
+/* Primary color border when input has value (not empty) - MUST be after other input styles */
+.sud-form-input.has-value {
+    border-bottom-color: var(--sud-primary) !important;
+}
+
+.sud-input-floating .sud-form-input.has-value {
+    border-bottom-color: var(--sud-primary) !important;
+}
+
+/* More specific selectors to override style.css */
+input.sud-form-input.has-value,
+textarea.sud-form-input.has-value {
+    border-bottom-color: var(--sud-primary) !important;
+}
+
+/* Even more specific selectors for different input types */
+input[type="text"].sud-form-input.has-value,
+input[type="password"].sud-form-input.has-value,
+input[type="email"].sud-form-input.has-value,
+input[type="tel"].sud-form-input.has-value,
+input[type="url"].sud-form-input.has-value,
+input[type="date"].sud-form-input.has-value,
+textarea.sud-form-input.has-value {
+    border-bottom-color: var(--sud-primary) !important;
+}
+
+/* Form groups, labels and placeholders are handled in style.css */
+
+/* Floating label styles are handled in style.css */
+
+/* Required fields styling handled in style.css */
+
+/* Textarea styles are handled in style.css */
+
+/* Checkbox styles are handled in style.css */
+
+/* Form dividers are handled in style.css */
+
+/* Error and success messages are handled in style.css */
+
+/* Media queries for forms are handled in style.css */

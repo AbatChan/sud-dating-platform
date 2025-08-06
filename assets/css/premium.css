@@ -1,0 +1,340 @@
+@import 'variables.css';
+
+.premium-container {
+	margin: 0 auto;
+}
+
+footer {
+	margin: 0;
+}
+
+.premium-header {
+	text-align: center;
+	margin-bottom: 2rem;
+	color: var(--sud-text-primary) !important;
+}
+
+.premium-header h1 {
+	font-size: 2rem;
+	margin-bottom: 0.75rem;
+	color: var(--sud-text-primary) !important;
+	font-weight: 700;
+	letter-spacing: -0.5px;
+}
+
+.premium-header p {
+	font-size: 1rem;
+	color: var(--sud-text-secondary) !important;
+	max-width: 650px;
+	margin: 0 auto;
+	line-height: 1.5;
+}
+
+.premium-plans {
+	margin-bottom: 3rem;
+}
+
+.billing-toggle {
+	display: flex;
+	justify-content: center;
+	margin: 3.5rem 0;
+}
+
+.switch-toggle {
+	position: relative;
+	display: inline-flex;
+	background: var(--sud-surface);
+	border-radius: 30px;
+	padding: 4px;
+	cursor: pointer;
+	min-width: 280px;
+	box-shadow: var(--shadow-sm);
+	border: 1px solid var(--sud-border);
+}
+
+.switch-toggle input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.toggle-slider {
+	position: absolute;
+	top: 4px;
+	left: 4px;
+	width: calc(50% - 4px);
+	height: calc(100% - 8px);
+	background: var(--sud-primary);
+	border-radius: 28px;
+	transition: transform 0.3s ease;
+	z-index: 1;
+}
+
+.switch-toggle input[type="checkbox"]:checked+.toggle-slider {
+	transform: translateX(calc(100% + 4px));
+}
+
+.toggle-labels {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.toggle-labels span {
+	flex: 1;
+	padding: 8px 12px;
+	text-align: center;
+	font-size: 0.9rem;
+	font-weight: 500;
+	color: var(--sud-text-secondary) !important;
+	transition: color 0.3s ease;
+}
+
+.toggle-labels .monthly.active,
+.toggle-labels .annually.active {
+	color: #fff !important;
+	font-weight: 600;
+}
+
+.packages-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2rem;
+	justify-content: center;
+}
+
+.premium-plan {
+	background-color: var(--sud-card-bg);
+	border-radius: 0.75rem;
+	box-shadow: var(--shadow-md);
+	border: 1px solid var(--sud-border-light);
+	padding: 1.75rem;
+	width: 280px;
+	position: relative;
+	transition: transform 0.3s, box-shadow 0.3s;
+	border-top: 3px solid var(--sud-border);
+	display: flex;
+	flex-direction: column;
+}
+
+.premium-plan:hover {
+	transform: translateY(-7px);
+	box-shadow: var(--shadow-xl);
+	border-color: var(--sud-primary);
+}
+
+.plan-silver {
+	border-top-color: #C0C0C0;
+}
+
+.plan-gold {
+	border-top-color: #FFD700;
+}
+
+.plan-diamond {
+	border-top-color: #81c4d3;
+}
+
+.plan-badge {
+	position: absolute;
+	top: -10px;
+	right: 15px;
+	background-color: var(--sud-primary);
+	color: white;
+	padding: 4px 12px;
+	border-radius: 20px;
+	font-size: 0.7rem;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.plan-name {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-bottom: 0.5rem;
+	color: var(--sud-text-primary) !important;
+}
+
+.plan-price {
+	margin-bottom: 1.25rem;
+	color: var(--sud-text-primary) !important;
+}
+
+.monthly-price,
+.annual-price {
+	font-size: 2rem;
+	font-weight: 700;
+	color: var(--sud-text-primary) !important;
+	line-height: 1.2;
+}
+
+.price-period {
+	font-size: 0.9rem;
+	color: var(--sud-text-muted) !important;
+	font-weight: normal;
+}
+
+.annual-total {
+	font-size: 0.8rem;
+	color: var(--sud-text-secondary);
+	margin-top: 0.25rem;
+}
+
+.annual-saving {
+	display: inline-block;
+	background: #e6f7e6;
+	color: #2c7a2c;
+	font-size: 0.7rem;
+	font-weight: 600;
+	padding: 3px 8px;
+	border-radius: 12px;
+	margin-top: 0.5rem;
+}
+
+.plan-benefits {
+	margin-bottom: 1.5rem;
+	flex-grow: 1;
+}
+
+.benefit-item {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 0.75rem;
+	color: var(--sud-text-primary) !important;
+	font-size: 0.9rem;
+}
+
+.benefit-icon {
+	color: var(--sud-primary) !important;
+	margin-right: 0.5rem;
+	font-size: 0.9rem;
+	margin-top: 2px;
+	flex-shrink: 0;
+}
+
+.btn-subscribe {
+	display: block;
+	width: 100%;
+	padding: 0.9rem 2.5rem;
+	background-color: var(--sud-primary);
+	color: white;
+	text-align: center;
+	border: none;
+	border-radius: 24px;
+	font-size: 0.95rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.btn-subscribe:hover {
+	background-color: var(--sud-primary-hover);
+	color: white;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-current {
+	background-color: var(--sud-text-disabled);
+	cursor: default;
+}
+
+.btn-current:hover {
+	background-color: var(--sud-text-disabled);
+	transform: none;
+	box-shadow: none;
+}
+
+.plan-popular {
+	transform: scale(1.05);
+	box-shadow: var(--shadow-xl);
+	border-color: var(--sud-primary) !important;
+	z-index: 1;
+}
+
+.plan-popular:hover {
+	transform: scale(1.05) translateY(-7px);
+}
+
+.secure-payment {
+	text-align: center;
+	margin-top: 3rem;
+	padding: 1.5rem;
+	border-radius: 0.75rem;
+}
+
+.secure-payment h3 {
+	font-size: 1.1rem;
+	margin-bottom: 1rem;
+	color: var(--sud-text-primary) !important;
+}
+
+.payment-methods {
+	display: flex;
+	justify-content: center;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+}
+
+.payment-method img {
+	height: 28px;
+	object-fit: contain;
+}
+
+@media (min-width: 993px) {
+	.packages-container {
+		display: flex;
+		flex-wrap: nowrap;
+		justify-content: center;
+		align-items: stretch;
+		gap: 2rem;
+	}
+
+	.premium-plan {
+		flex: 1;
+	}
+}
+
+@media (max-width: 992px) {
+	.packages-container {
+		flex-wrap: wrap;
+	}
+
+	.premium-plan {
+		width: calc(50% - 1rem);
+		min-width: 260px;
+		margin-bottom: 1rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.premium-header h1 {
+		font-size: 1.75rem;
+	}
+
+	.premium-plan {
+		width: 100%;
+	}
+
+	.plan-popular {
+		transform: scale(1);
+	}
+
+	.plan-popular:hover {
+		transform: translateY(-7px);
+	}
+
+	.card-details {
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.toggle-labels span {
+		font-size: 0.8rem;
+		padding: 15px 10px;
+	}
+}

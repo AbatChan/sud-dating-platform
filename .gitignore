@@ -1,0 +1,80 @@
+# WordPress Core Files (if any)
+wp-config.php
+wp-config-sample.php
+
+# Sensitive Configuration Files
+/includes/brand-config.php
+/includes/config-local.php
+*.log
+error_log
+
+# Database Backups
+*.sql
+*.sql.gz
+
+# Environment Variables
+.env
+.env.local
+.env.production
+
+# Payment Gateway Keys & Secrets
+**/stripe-keys*
+**/paypal-keys*
+**/api-keys*
+
+# User Uploaded Content (large files)
+/uploads/profile-pictures/*
+/uploads/verification/*
+/uploads/gifts/*
+!/uploads/profile-pictures/.htaccess
+!/uploads/verification/.htaccess
+!/uploads/gifts/.htaccess
+
+# Vendor Dependencies (if using Composer)
+/vendor/
+composer.lock
+
+# Node Modules (if any)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Cache Files
+cache/
+*.cache
+
+# Debug and Test Files
+debug.php
+test.php
+phpinfo.php
+
+# Backup Files
+*.bak
+*.backup
+backup/
+
+# XAMPP Specific
+.htaccess.backup

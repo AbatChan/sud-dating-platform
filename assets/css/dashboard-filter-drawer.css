@@ -1,0 +1,85 @@
+.dashboard-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--sud-border);
+    position: relative;
+}
+
+.btn-filter {
+    padding: var(--space-sm) var(--space-lg);
+    background-color: var(--sud-surface);
+    border: 1px solid var(--sud-border);
+    border-radius: var(--button-border-radius);
+    color: var(--sud-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    font-size: 14px;
+    margin-left: var(--space-md);
+    flex-shrink: 0;
+    font-weight: var(--font-weight-semibold);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-filter:hover {
+    background-color: var(--sud-secondary-bg-hover);
+    border-color: var(--sud-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
+}
+
+.btn-filter:active {
+    transform: translateY(0);
+}
+
+.btn-filter i {
+    color: var(--sud-primary);
+    font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .dashboard-modal-container {
+        display: none; /* Hide desktop modal on mobile */
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-controls {
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
+    
+    .tabs {
+        order: 1;
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 1px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+    
+    .tabs::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    
+    .tab {
+        padding: 10px 15px;
+        white-space: nowrap;
+    }
+    
+    .btn-filter {
+        display: none;
+    }
+}
+
+@media (max-width: 576px) {    
+    .tab {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
