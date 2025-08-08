@@ -605,6 +605,47 @@ $page_title = "Premium Membership - " . SUD_SITE_NAME;
             });
 
 
+            // Handle choice button clicks (Try 3-Day Free Trial buttons)
+            document.addEventListener('click', function(e) {
+                if (e.target.hasAttribute('data-action') && e.target.getAttribute('data-action') === 'choice') {
+                    e.preventDefault();
+                    const button = e.target;
+                    const planId = button.getAttribute('data-plan');
+                    const monthlyPrice = parseFloat(button.getAttribute('data-price-monthly'));
+                    const annualPrice = parseFloat(button.getAttribute('data-price-annually'));
+                    
+                    // Check billing cycle from main page toggle
+                    const billingToggle = document.querySelector('#billing-toggle');
+                    const isAnnual = billingToggle ? billingToggle.checked : false;
+                    const selectedPrice = isAnnual ? annualPrice : monthlyPrice;
+                    const billingText = isAnnual ? '/year' : '/month';
+                    
+                    // Get plan name
+                    const planNames = {
+                        'silver': 'Silver',
+                        'gold': 'Gold', 
+                        'diamond': 'Diamond'
+                    };
+                    const planName = planNames[planId] || planId.charAt(0).toUpperCase() + planId.slice(1);
+                    
+                    // Update choice modal content
+                    document.getElementById('choice-plan-name').textContent = planName;
+                    document.getElementById('choice-price').textContent = selectedPrice.toFixed(2);
+                    document.getElementById('choice-billing-text').textContent = billingText;
+                    
+                    // Store plan data in choice modal
+                    const choiceModal = document.getElementById('choice-modal');
+                    choiceModal.setAttribute('data-plan', planId);
+                    choiceModal.setAttribute('data-price-monthly', monthlyPrice);
+                    choiceModal.setAttribute('data-price-annually', annualPrice);
+                    choiceModal.setAttribute('data-plan-name', planName);
+                    
+                    // Show choice modal
+                    choiceModal.classList.add('show');
+                    choiceModal.style.display = 'flex';
+                }
+            });
+
             // Handle trial button clicks (Switch to [plan] Trial buttons)
             document.addEventListener('click', function(e) {
                 if (e.target.hasAttribute('data-action') && e.target.getAttribute('data-action') === 'trial') {
