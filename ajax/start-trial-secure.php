@@ -85,6 +85,12 @@ if ($active_trial && $active_trial['plan'] === $plan_id) {
     exit;
 }
 
+// Handle trial plan switching - allow switching to different trial plan
+if ($active_trial && $active_trial['plan'] !== $plan_id) {
+    // User is switching from one trial to another - this is allowed
+    // The trial activation will handle updating the plan and preserving trial end date
+}
+
 // Collect secure billing details following industry standards (minimal data like Netflix/Shopify)
 $billing_details = [
     'email' => sanitize_email($_POST['email'] ?? $current_user->user_email),

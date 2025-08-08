@@ -214,18 +214,9 @@
                 
                 // Use completion nonce
                 const config = window.sud_payment_config || {};
-                console.log('🔍 Complete Trial Debug:', {
-                    config: config,
-                    complete_trial_nonce: config.complete_trial_nonce,
-                    plan: formData.get('plan'),
-                    payment_intent_id: confirmResult.paymentIntent.id,
-                    window_sud_payment_config: window.sud_payment_config
-                });
                 
                 if (config.complete_trial_nonce) {
                     completeData.append('nonce', config.complete_trial_nonce);
-                } else {
-                    console.error('❌ Missing complete_trial_nonce in config');
                 }
                 completeData.append('action', 'complete_trial_setup');
                 

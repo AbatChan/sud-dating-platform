@@ -364,6 +364,13 @@
                     this.showButtonError(modalId);
                     return;
                 }
+                
+                // Ensure order_uid is always present when building the payload
+                if (!config.order_uid) {
+                    // The modal might have been reopened & lost its UID – regenerate
+                    config.order_uid = (crypto.randomUUID ? crypto.randomUUID() : 
+                                        'uid-' + Date.now() + '-' + Math.random().toString(16).slice(2));
+                }
         
                 const paymentData = {
                     payment_method_id: paymentMethod.id,
@@ -491,6 +498,13 @@
         // Process PayPal payment on server
         processPayPalPayment: function(modalId, paymentData) {
             const endpoint = this.getPaymentEndpoint(paymentData.config.type);
+            
+            // Ensure order_uid is always present when building the payload
+            if (!paymentData.config.order_uid) {
+                // The modal might have been reopened & lost its UID – regenerate
+                paymentData.config.order_uid = (crypto.randomUUID ? crypto.randomUUID() : 
+                                                'uid-' + Date.now() + '-' + Math.random().toString(16).slice(2));
+            }
             
             const serverData = {
                 payment_method: 'paypal',

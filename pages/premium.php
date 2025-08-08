@@ -332,6 +332,10 @@ $page_title = "Premium Membership - " . SUD_SITE_NAME;
                             <!-- Stripe Card Element will be mounted here -->
                         </div>
                         <div id="trial-card-errors" class="card-errors" role="alert"></div>
+                        <small class="trial-note">
+                            A refundable $5 authorization will be placed on your card to verify
+                            it. The hold is released immediately.
+                        </small>
                     </div>
                     <button type="submit" id="start-trial-btn">Start My FREE Trial</button>
                     
@@ -343,7 +347,6 @@ $page_title = "Premium Membership - " . SUD_SITE_NAME;
 
             
             <p class="trial-footer-text">
-                We'll send you a reminder 1 day before it ends. 
                 <a href="<?php echo site_url('/terms-of-service'); ?>" target="_blank">View cancellation policy</a>.
             </p>
         </div>

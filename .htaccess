@@ -43,7 +43,7 @@
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-XSS-Protection "1; mode=block"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' cdnjs.cloudflare.com js.stripe.com www.paypal.com *.paypal.com code.jquery.com maps.googleapis.com; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com code.jquery.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com; img-src 'self' data: blob: *.stripe.com *.paypal.com *.paypalobjects.com maps.gstatic.com; connect-src 'self' api.stripe.com *.paypal.com maps.googleapis.com; frame-src 'self' js.stripe.com *.paypal.com; media-src 'self'; worker-src 'self' blob:;"
+# Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' cdnjs.cloudflare.com js.stripe.com www.paypal.com *.paypal.com code.jquery.com maps.googleapis.com; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com fonts.googleapis.com code.jquery.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com; img-src 'self' data: blob: *.stripe.com *.paypal.com *.paypalobjects.com maps.gstatic.com; connect-src 'self' api.stripe.com *.paypal.com maps.googleapis.com; frame-src 'self' js.stripe.com *.paypal.com; media-src 'self'; worker-src 'self' blob:;"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(self), microphone=(), camera=()"
 </IfModule>

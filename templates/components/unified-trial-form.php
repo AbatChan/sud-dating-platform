@@ -79,7 +79,6 @@ if (!isset($payment_settings)) {
             </button>
             
             <p class="trial-footer-text">
-                We'll send you a reminder 1 day before it ends. 
                 <a href="<?php echo site_url('/terms-of-service'); ?>" target="_blank">View cancellation policy</a>.
             </p>
             

@@ -5,7 +5,6 @@
 
 // Hook into WordPress cron system
 add_action('sud_check_trial_expiry', 'sud_process_expired_trials');
-add_action('sud_check_trial_warnings', 'sud_process_trial_expiry_warnings');
 add_action('sud_process_billing_retries', 'sud_process_billing_retries');
 add_action('sud_cleanup_stale_payment_intents', 'sud_cleanup_stale_payment_intents');
 
@@ -23,9 +22,6 @@ function sud_init_trial_cron_jobs() {
     if (!wp_next_scheduled('sud_check_trial_expiry')) {
         wp_schedule_event(time(), 'hourly', 'sud_check_trial_expiry');
     }
-    if (!wp_next_scheduled('sud_check_trial_warnings')) {
-        wp_schedule_event(time(), 'daily', 'sud_check_trial_warnings');
-    }
     if (!wp_next_scheduled('sud_process_billing_retries')) {
         wp_schedule_event(time(), 'hourly', 'sud_process_billing_retries');
     }
@@ -39,7 +35,6 @@ function sud_init_trial_cron_jobs() {
  */
 function sud_cleanup_trial_cron_jobs() {
     wp_clear_scheduled_hook('sud_check_trial_expiry');
-    wp_clear_scheduled_hook('sud_check_trial_warnings');
     wp_clear_scheduled_hook('sud_process_billing_retries');
 }
 
@@ -87,6 +82,20 @@ function sud_process_expired_trials() {
         
         // Skip if no trial data exists (already processed)
         if (!$trial_plan || !$trial_end) {
+            continue;
+        }
+        
+        // CRITICAL: Check if trial was cancelled by admin - DO NOT charge cancelled trials
+        $downgrade_reason = get_user_meta($user_id, 'sud_trial_downgrade_reason', true);
+        if (!empty($downgrade_reason) && strpos($downgrade_reason, 'Cancelled by admin') !== false) {
+            // Trial was cancelled by admin, just clean up trial data without charging
+            delete_user_meta($user_id, 'sud_trial_plan');
+            delete_user_meta($user_id, 'sud_trial_start');
+            delete_user_meta($user_id, 'sud_trial_end');
+            
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("TRIAL EXPIRY: Skipping billing for user {$user_id} - trial was cancelled by admin");
+            }
             continue;
         }
         
@@ -281,7 +290,16 @@ function sud_process_stripe_trial_billing($user_id, $plan_id, $billing_cycle, $p
                 return ['success' => false, 'error' => 'Customer account was deleted from Stripe'];
             }
         } catch (\Stripe\Exception\InvalidRequestException $e) {
-            return ['success' => false, 'error' => 'Customer not found in Stripe: ' . $e->getMessage()];
+            // Check for test/live mode mismatch
+            $error_message = $e->getMessage();
+            if (strpos($error_message, 'No such customer') !== false) {
+                $current_mode = sud_is_test_mode() ? 'test' : 'live';
+                $opposite_mode = sud_is_test_mode() ? 'live' : 'test';
+                
+                return ['success' => false, 'error' => "Customer was created in {$opposite_mode} mode but site is currently in {$current_mode} mode. Please contact support or retry your trial setup."];
+            }
+            
+            return ['success' => false, 'error' => 'Customer not found in Stripe: ' . $error_message];
         }
         
         try {
@@ -290,7 +308,16 @@ function sud_process_stripe_trial_billing($user_id, $plan_id, $billing_cycle, $p
                 error_log("STRIPE BILLING: Payment method {$payment_method->id} found, type: {$payment_method->type}");
             }
         } catch (\Stripe\Exception\InvalidRequestException $e) {
-            return ['success' => false, 'error' => 'Payment method not found in Stripe: ' . $e->getMessage()];
+            // Check for test/live mode mismatch
+            $error_message = $e->getMessage();
+            if (strpos($error_message, 'No such payment_method') !== false) {
+                $current_mode = sud_is_test_mode() ? 'test' : 'live';
+                $opposite_mode = sud_is_test_mode() ? 'live' : 'test';
+                
+                return ['success' => false, 'error' => "Payment method was created in {$opposite_mode} mode but site is currently in {$current_mode} mode. Please retry your trial setup."];
+            }
+            
+            return ['success' => false, 'error' => 'Payment method not found in Stripe: ' . $error_message];
         }
         
         // Create subscription with the stored payment method
@@ -437,6 +464,41 @@ function sud_convert_trial_to_subscription($user_id, $plan_id, $billing_result) 
     if (isset($billing_result['subscription_id'])) {
         update_user_meta($user_id, 'subscription_id', $billing_result['subscription_id']);
     }
+    
+    // Create transaction record for Premium Payments tab
+    global $wpdb;
+    $transactions_table = $wpdb->prefix . 'sud_transactions';
+    
+    // Check if transactions table exists
+    if ($wpdb->get_var("SHOW TABLES LIKE '$transactions_table'") == $transactions_table) {
+        // Get plan pricing
+        $amount = $billing_cycle === 'annual' ? 
+            ($plan['price_annually'] ?? $plan['annual_price'] ?? 0) : 
+            ($plan['price_monthly'] ?? $plan['monthly_price'] ?? 0);
+            
+        // Create transaction record
+        $description = "Premium " . ucfirst($plan_id) . " Subscription (converted from trial)";
+        
+        $wpdb->insert(
+            $transactions_table,
+            [
+                'user_id' => $user_id,
+                'description' => $description,
+                'amount' => $amount,
+                'payment_method' => 'stripe',
+                'transaction_id' => $billing_result['subscription_id'] ?? '',
+                'status' => 'completed',
+                'created_at' => current_time('mysql')
+            ],
+            ['%d', '%s', '%f', '%s', '%s', '%s', '%s']
+        );
+        
+        if ($wpdb->last_error) {
+            error_log("TRIAL CONVERSION: Failed to create transaction record for user {$user_id}: " . $wpdb->last_error);
+        } else {
+            error_log("TRIAL CONVERSION: Created transaction record for user {$user_id} - {$plan_id} subscription");
+        }
+    }
 }
 
 /**
@@ -512,69 +574,6 @@ function sud_send_trial_conversion_email($user_id, $plan_id) {
     wp_mail($user->user_email, $subject, $message, ['Content-Type: text/html; charset=UTF-8']);
 }
 
-/**
- * Process trials that expire in 24 hours and send warning emails
- * DISABLED: Trial reminder emails have been disabled
- */
-function sud_process_trial_expiry_warnings() {
-	// Trial reminder emails disabled - function returns early
-	error_log( 'SUD TRIAL WARNINGS: Trial reminder emails are disabled' );
-	return;
-	
-	global $wpdb;
-
-	$warning_start = date( 'Y-m-d H:i:s', strtotime( '+23 hours' ) );
-	$warning_end   = date( 'Y-m-d H:i:s', strtotime( '+25 hours' ) );
-
-	$warning_trials = $wpdb->get_results(
-		$wpdb->prepare(
-			"SELECT user_id, meta_value AS trial_end
-			 FROM {$wpdb->usermeta}
-			 WHERE meta_key = 'sud_trial_end'
-			   AND meta_value BETWEEN %s AND %s
-			   AND meta_value != ''",
-			$warning_start,
-			$warning_end
-		)
-	);
-
-	if ( empty( $warning_trials ) ) {
-		error_log( 'SUD TRIAL WARNINGS: No trials expiring in 24 hours' );
-		return;
-	}
-
-	error_log( 'SUD TRIAL WARNINGS: Found ' . count( $warning_trials ) . ' trials expiring in 24 hours' );
-
-	foreach ( $warning_trials as $trial_info ) {
-		$user_id   = $trial_info->user_id;
-		$trial_end = $trial_info->trial_end;
-
-		// Skip if we already pinged them
-		if ( get_user_meta( $user_id, 'sud_trial_warning_sent', true ) ) {
-			error_log( "SUD TRIAL WARNINGS: Warning already sent to user $user_id, skipping" );
-			continue;
-		}
-
-		$trial_plan = get_user_meta( $user_id, 'sud_trial_plan', true ) ?: 'premium';
-
-		// Fire email (function must exist in your project)
-		if ( function_exists( 'send_trial_expiry_warning_email' )
-		     && send_trial_expiry_warning_email(
-				$user_id,
-				[
-					'plan'  => $trial_plan,
-					'end'   => $trial_end,
-					'days'  => 1,
-				]
-		     )
-		) {
-			update_user_meta( $user_id, 'sud_trial_warning_sent', current_time( 'mysql' ) );
-			error_log( "SUD TRIAL WARNINGS: Warning email sent successfully to user $user_id" );
-		} else {
-			error_log( "SUD TRIAL WARNINGS: Failed to send warning email to user $user_id" );
-		}
-	}
-}
 
 /**
  * Send trial billing failure email
@@ -1038,5 +1037,4 @@ function sud_cleanup_stale_payment_intents() {
 // Hook the functions to WordPress cron events  
 add_action('sud_check_trial_expiry', 'sud_log_trial_system_health', 5); // Priority 5 = runs before main function
 add_action('sud_check_trial_expiry', 'sud_process_expired_trials');
-add_action('sud_check_trial_warnings', 'sud_process_trial_expiry_warnings');
 add_action('sud_process_billing_retries', 'sud_process_billing_retries');

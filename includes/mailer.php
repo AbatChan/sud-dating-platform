@@ -646,7 +646,7 @@ if (!function_exists('send_admin_subscription_cancellation_notification')) {
         $body_html .= "</div>";
         
         $body_html .= "<p>Your trial will automatically convert to a paid subscription unless you cancel before it expires.</p>";
-        $body_html .= "<p>We'll send you a reminder 1 day before it ends. Enjoy exploring all the premium features!</p>";
+        $body_html .= "<p>Enjoy exploring all the premium features!</p>";
         
         $button_details = [
             ['text' => 'Start Exploring', 'link' => SUD_URL . '/pages/dashboard'],
